@@ -1,0 +1,64 @@
+@font-face {
+  font-family: Montserrat;
+  src: url(https://fonts.gstatic.com/s/montserrat/v26/JTUSjIg1_i6t8kCHKm459WlhyyTh89Y.woff2);
+}
+
+body {
+  width: 1920px;
+  height: 1080px;
+	margin: 0px;
+	background-color: white;
+}
+  
+#main {
+  position: relative;
+  width: 1920px;
+	background-color: black;
+  color: white;
+  text-align: left;
+}
+
+table {
+
+}
+
+.row {
+  padding: 40px;
+}
+
+.text {
+  vertical-align: top;  
+  padding: 40px;
+}
+
+.thumb {
+  width: 640px;
+  height: 355px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.thumb img {
+  width: 512px;
+  height: 288px;
+}
+
+.selected img {
+  border: solid 10px #5ABDA2;
+  transform: scale(1.05);
+}
+
+.title {
+	font: 42pt "Montserrat";
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.selected .title {
+  color: #5ABDA2;
+}
+
+.description {
+	font: 22pt "Montserrat";
+  line-height: 1.45em;
+}
