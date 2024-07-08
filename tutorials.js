@@ -2,18 +2,23 @@ let selected = 0;
 const videos = [
   "https://senza-developer.s3.amazonaws.com/streams/simulator/simulator.mpd",
   "https://senza-developer.s3.amazonaws.com/streams/debugger/debugger.mpd",
-  "https://senza-developer.s3.amazonaws.com/streams/sample-app/sample-app.mpd"
+  "https://senza-developer.s3.amazonaws.com/streams/sample-app/sample-app.mpd",
+  "https://senza-developer.s3.amazonaws.com/streams/zoom/zoom.mpd",
+  "https://senza-developer.s3.amazonaws.com/streams/flags/flags.mpd",
+  "https://senza-developer.s3.amazonaws.com/streams/speech-recognition/speech-recognition.mpd",
+  "https://senza-developer.s3.amazonaws.com/streams/authentication/authentication.mpd",
+  "https://senza-developer.s3.amazonaws.com/streams/remote/remote.mpd",
 ];
 
 window.addEventListener("load", async () => {
   try {
-    await hs.init();
+    await senza.init();
 
-    hs.remotePlayer.addEventListener("ended", () => {
-      hs.lifecycle.moveToForeground();
+    senza.remotePlayer.addEventListener("ended", () => {
+      senza.lifecycle.moveToForeground();
     });
 
-    hs.uiReady();
+    senza.uiReady();
   } catch (error) {
     console.error(error);
   }
@@ -59,13 +64,13 @@ function deselect(link) {
 }
 
 function scrollToMiddle(link) {
-  link.scrollIntoView({behavior: 'auto', block: 'center', inline: 'center'});
+  link.scrollIntoView({behavior: "smooth", block: "center", inline: "center"});
 }
 
 async function toggleVideo() {
-  const currentState = await hs.lifecycle.getState();
+  const currentState = await senza.lifecycle.getState();
   if (currentState == "background" || currentState == "inTransitionToBackground") {
-    hs.lifecycle.moveToForeground();
+    senza.lifecycle.moveToForeground();
   } else {
     await playVideo(videos[selected]);
   }
@@ -73,9 +78,9 @@ async function toggleVideo() {
 
 async function playVideo(url) {
   try {
-    await hs.remotePlayer.load(url);
+    await senza.remotePlayer.load(url);
   } catch (error) {
     console.log("Couldn't load remote player.");
   }
-  hs.remotePlayer.play();
+  senza.remotePlayer.play();
 }
