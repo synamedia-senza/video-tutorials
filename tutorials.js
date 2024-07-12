@@ -1,18 +1,10 @@
 let selected = 0;
-const videos = [
-  "https://senza-developer.s3.amazonaws.com/streams/simulator/simulator.mpd",
-  "https://senza-developer.s3.amazonaws.com/streams/debugger/debugger.mpd",
-  "https://senza-developer.s3.amazonaws.com/streams/sample-app/sample-app.mpd",
-  "https://senza-developer.s3.amazonaws.com/streams/zoom/zoom.mpd",
-  "https://senza-developer.s3.amazonaws.com/streams/flags/flags.mpd",
-  "https://senza-developer.s3.amazonaws.com/streams/speech-recognition/speech-recognition.mpd",
-  "https://senza-developer.s3.amazonaws.com/streams/authentication/authentication.mpd",
-  "https://senza-developer.s3.amazonaws.com/streams/remote/remote.mpd",
-];
 
 window.addEventListener("load", async () => {
   try {
     await senza.init();
+
+    updateVideos();
 
     senza.remotePlayer.addEventListener("ended", () => {
       senza.lifecycle.moveToForeground();
@@ -23,6 +15,21 @@ window.addEventListener("load", async () => {
     console.error(error);
   }
 });
+
+function updateVideos() {
+  videos.forEach((video, index) => {
+    let rowClass = index == selected ? "row selected" : "row";
+    table.innerHTML += `<tr class="${rowClass}">
+      <td class="thumb">
+        <img src="${video.thumb}">
+      </td>
+      <td class="text">
+        <div class="title">${video.title}</div>
+        <div class="description">${video.description}</div>
+      </td>
+    </tr>`;
+  });
+}
 
 document.addEventListener("keydown", async function(event) {
 	switch (event.key) {
