@@ -79,7 +79,7 @@ async function toggleVideo() {
   if (currentState == "background" || currentState == "inTransitionToBackground") {
     senza.lifecycle.moveToForeground();
   } else {
-    await playVideo(videos[selected]);
+    await playVideo(videos[selected].url);
   }
 }
 
