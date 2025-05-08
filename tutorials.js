@@ -5,7 +5,8 @@ window.addEventListener("load", async () => {
     await senza.init();
 
     updateVideos();
-
+    down();
+    
     senza.remotePlayer.addEventListener("ended", () => {
       senza.lifecycle.moveToForeground();
     });
@@ -17,17 +18,41 @@ window.addEventListener("load", async () => {
 });
 
 function updateVideos() {
+  table.innerHTML = '';
+  const tbody = document.createElement('tbody');
+  table.appendChild(tbody);
+
   videos.forEach((video, index) => {
-    let rowClass = index == selected ? "row selected" : "row";
-    table.innerHTML += `<tr class="${rowClass}">
-      <td class="thumb">
-        <img src="${video.thumb}">
-      </td>
-      <td class="text">
-        <div class="title">${video.title}</div>
-        <div class="description">${video.description}</div>
-      </td>
-    </tr>`;
+    // Create the row and set its class
+    const tr = document.createElement('tr');
+    tr.className = index === selected ? 'row selected' : 'row';
+
+    // Create the thumbnail cell
+    const thumbTd = document.createElement('td');
+    thumbTd.className = 'thumb';
+    const img = document.createElement('img');
+    img.src = video.thumb;
+    thumbTd.appendChild(img);
+
+    // Create the text cell
+    const textTd = document.createElement('td');
+    textTd.className = 'text';
+
+    const titleDiv = document.createElement('div');
+    titleDiv.className = 'title';
+    titleDiv.textContent = video.title;
+
+    const descDiv = document.createElement('div');
+    descDiv.className = 'description';
+    descDiv.textContent = video.description;
+
+    textTd.appendChild(titleDiv);
+    textTd.appendChild(descDiv);
+
+    // Assemble the row
+    tr.appendChild(thumbTd);
+    tr.appendChild(textTd);
+    tbody.appendChild(tr);
   });
 }
 
@@ -63,7 +88,6 @@ function down() {
 function select(link) {
   link.classList.add("selected");
   scrollToMiddle(link);
-  console.log('Selected: ' + link.innerHTML);
 }
 
 function deselect(link) {
@@ -75,7 +99,7 @@ function scrollToMiddle(link) {
 }
 
 async function toggleVideo() {
-  const currentState = await senza.lifecycle.getState();
+  const currentState = senza.lifecycle.state;
   if (currentState == "background" || currentState == "inTransitionToBackground") {
     senza.lifecycle.moveToForeground();
   } else {
@@ -84,10 +108,12 @@ async function toggleVideo() {
 }
 
 async function playVideo(url) {
+  console.log("Playing", url);
   try {
     await senza.remotePlayer.load(url);
+    await senza.remotePlayer.play();
+    await senza.lifecycle.moveToBackground();
   } catch (error) {
-    console.log("Couldn't load remote player.");
+    console.log("Couldn't load remote player: ", error);
   }
-  senza.remotePlayer.play();
 }
